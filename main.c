@@ -7,13 +7,30 @@ int main(int argc, char *argv[])
 	 * for now this simply assumes the user has all power */
 
 	char *file_path = argv[1];	/* will segfault if missing args */
-	FILE *fp = fopen(file_path, "r");
-	char line[256] = {0};	/* used for storing the line buffer in the file */
 
 	if (argc < 2)
 	{
 		fprintf(stderr, "Missing arguments in command\n");
 	}
+
+	json_parse(file_path);
+
+}
+
+/*
+typedef struct
+{
+	char *parent_object;
+	json_data_type data_type;
+	char *key_value;
+	void *content;
+} json_data;
+*/
+
+int json_parse(const char *restrict file_path)
+{
+	FILE *fp = fopen(file_path, "r");
+	char line[256] = {0};	/* used for storing the line buffer in the file */
 
 	if (fp == NULL)
 	{
