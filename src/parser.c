@@ -69,4 +69,17 @@ uint16_t key_match(const char *key_value, uint16_t num_entries, json_data json_e
 	return 65535;
 }
 
+Bool str_compare(const char *arg, const char *str)
 {
+	/* match arg to str */
+	uint8_t i = 0;
+	while (arg[i] != '\0' && str[i] != '\0')
+	{
+		if (arg[i] != str[i])
+		{
+			return False;
+		}
+		i++;
+	}
+	return True;
+}
