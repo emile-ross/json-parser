@@ -1,15 +1,12 @@
 #include "header.h"
 
-int json_parse(const char *file_path)
+void file_check(FILE *file_path, const char *filename);
+
+int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[])
 {
 	FILE *fp = fopen(file_path, "r");
 	char line[256] = {0};	/* used for storing the line buffer in the file */
-
-	if (fp == NULL)
-	{
-		fprintf(stderr,	"file not found\n");
-		return 1;	/*file not found */
-	}
+	file_check(fp, file_path);	/* checks for fp being NULL */
 
 	do {
 		uint16_t line_size = sizeof(line);
@@ -65,3 +62,11 @@ typedef struct
 */
 
 
+void file_check(FILE *file_path, const char *filename)
+{
+	if (file_path == NULL)
+	{
+		fprintf(stderr,	"file %s not found\n", filename);
+		exit(1);	/*file not found */
+	}
+}

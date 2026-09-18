@@ -11,4 +11,4 @@ typedef enum
 	True = 1
 } Bool;
 
-int json_parse(const char *file_path);
+int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[]);

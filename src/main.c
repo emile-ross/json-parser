@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 	}
 
 	json_parse(file_path);
+
 	return 0;
 }
 
