@@ -2,7 +2,7 @@
 
 void file_check(FILE *file_path, const char *filename);
 
-int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[])
+int json_parse(const char *file_path, uint16_t num_entries, json_data (*json_entry)[])
 {
 	FILE *fp = fopen(file_path, "r");
 	char line[256] = {0};	/* used for storing the line buffer in the file */
@@ -60,13 +60,3 @@ typedef struct
 	void *content;
 } json_data;
 */
-
-
-void file_check(FILE *file_path, const char *filename)
-{
-	if (file_path == NULL)
-	{
-		fprintf(stderr,	"file %s not found\n", filename);
-		exit(1);	/*file not found */
-	}
-}

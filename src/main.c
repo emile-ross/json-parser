@@ -9,12 +9,28 @@ int main(int argc, char *argv[])
 
 	const char *file_path = argv[1];	/* will segfault if missing args */
 
+
+	json_data indenting =
+	{
+		NULL,
+		INTEGER,
+		"indenting",
+		NULL
+	};
+
+	json_data (*entries)[2] = 
+	{
+		indenting,
+		NULL
+	}
+
+
+	json_parse(file_path, 2, entries);
+
 	if (argc < 2)
 	{
 		fprintf(stderr, "Missing arguments in command\n");
 	}
-
-	json_parse(file_path);
 
 	return 0;
 }
