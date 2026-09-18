@@ -9,7 +9,13 @@ int main(int argc, char *argv[])
 
 	const char *file_path = argv[1];	/* will segfault if missing args */
 
-
+	json_data program_name =
+	{
+		NULL,
+		STRING,
+		"program-name",
+		NULL
+	};
 	json_data indenting =
 	{
 		NULL,
@@ -18,12 +24,10 @@ int main(int argc, char *argv[])
 		NULL
 	};
 
-	json_data (*entries)[2] = 
-	{
-		indenting,
-		NULL
-	}
+	json_data entries[2] = { 0 };
 
+	entries[1] = indenting;
+	entries[2] = program_name;
 
 	json_parse(file_path, 2, entries);
 

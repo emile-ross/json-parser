@@ -2,10 +2,11 @@
 
 void file_check(FILE *file_path, const char *filename);
 
-int json_parse(const char *file_path, uint16_t num_entries, json_data (*json_entry)[])
+int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[])
 {
 	FILE *fp = fopen(file_path, "r");
 	char line[256] = {0};	/* used for storing the line buffer in the file */
+	uint16_t current_lookup = 0;
 	file_check(fp, file_path);	/* checks for fp being NULL */
 
 	do {
@@ -45,7 +46,7 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data (*json_ent
 			}
 		}
 
-	} while (1);
+	} while (num_entries > current_lookup);
 
 
 	return 0;
