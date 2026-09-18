@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
 		Bool open_quote = False;
 		uint8_t start_quote_index = 0;
 		uint16_t i = 0;
+		uint16_t j = 0;
+		char *key_value = NULL;
 
 		if (fgets(line, line_size, fp) == NULL)
 		{
@@ -51,7 +53,14 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					/* TODO handle string termination */
+					string_len = start_quote_index - i;
+					key_value = malloc(string_len);
+					for (j = start_quote_index; j < i; j++)
+					{
+						/* copy bytes from line into the key_value buffer */
+						key_value[i] = line[j];
+					}
+					/* TODO compare key_value to valid key lookup */
 				}
 			}
 		}
