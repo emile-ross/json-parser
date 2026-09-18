@@ -1,12 +1,14 @@
 #include "header.h"
 
+int json_parse(const char *file_path);
+
 int main(int argc, char *argv[])
 {
 	/* no type safety/memory safety for the input since this will 
 	 * later be implemented as a function without user input
 	 * for now this simply assumes the user has all power */
 
-	char *file_path = argv[1];	/* will segfault if missing args */
+	const char *file_path = argv[1];	/* will segfault if missing args */
 
 	if (argc < 2)
 	{
@@ -14,20 +16,10 @@ int main(int argc, char *argv[])
 	}
 
 	json_parse(file_path);
-
+	return 0;
 }
 
-/*
-typedef struct
-{
-	char *parent_object;
-	json_data_type data_type;
-	char *key_value;
-	void *content;
-} json_data;
-*/
-
-int json_parse(const char *restrict file_path)
+int json_parse(const char *file_path)
 {
 	FILE *fp = fopen(file_path, "r");
 	char line[256] = {0};	/* used for storing the line buffer in the file */
@@ -44,6 +36,7 @@ int json_parse(const char *restrict file_path)
 		uint8_t start_quote_index = 0;
 		uint16_t i = 0;
 		uint16_t j = 0;
+		uint32_t str_size = 0;
 		char *key_value = NULL;
 
 		if (fgets(line, line_size, fp) == NULL)
@@ -62,8 +55,8 @@ int json_parse(const char *restrict file_path)
 				}
 				else
 				{
-					string_len = start_quote_index - i;
-					key_value = malloc(string_len);
+					str_size = start_quote_index - i;
+					key_value = malloc(str_size);
 					for (j = start_quote_index; j < i; j++)
 					{
 						/* copy bytes from line into the key_value buffer */
@@ -79,3 +72,13 @@ int json_parse(const char *restrict file_path)
 
 	return 0;
 }
+
+/*
+typedef struct
+{
+	char *parent_object;
+	json_data_type data_type;
+	char *key_value;
+	void *content;
+} json_data;
+*/
