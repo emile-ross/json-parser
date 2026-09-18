@@ -5,4 +5,4 @@ FLAGS = -Wall -Wextra -Wconversion -Wpedantic -std=c89
 
 all: base
 base:
-	$(CC) $(SRCS) $(FLAGS) -o parser
+	$(CC) $(SRCS) $(FLAGS) -o parser -Werror
