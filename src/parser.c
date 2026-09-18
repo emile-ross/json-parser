@@ -1,6 +1,5 @@
 #include "header.h"
 
-
 int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[])
 {
 	FILE *fp = fopen(file_path, "r");
@@ -9,6 +8,7 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 	file_check(fp, file_path);	/* checks for fp being NULL */
 
 	do {
+		/* only valid since line is an array of chars */
 		uint16_t line_size = sizeof(line);
 		Bool open_quote = False;
 		uint8_t start_quote_index = 0;
@@ -41,18 +41,22 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 						key_value[i] = line[j];
 					}
 
-					key_match(key_value, num_entries, json_entry);
+					Bool fail = False;
+					key_match(&fail, key_value, num_entries, json_entry);
 				}
 			}
 		}
 
+		free(key_value);
+
 	} while (num_entries > current_lookup);
 
+	fclose(fp);
 
 	return 0;
 }
 
-uint16_t key_match(const char *key_value, uint16_t num_entries, json_data json_entry[])
+uint16_t key_match(Bool *fail, const char *key_value, uint16_t num_entries, json_data json_entry[])
 {
 	uint16_t i = 0;
 	for (i = 0; i < num_entries; i++)
@@ -67,19 +71,4 @@ uint16_t key_match(const char *key_value, uint16_t num_entries, json_data json_e
 	exit(1);
 
 	return 65535;
-}
-
-Bool str_compare(const char *arg, const char *str)
-{
-	/* match arg to str */
-	uint8_t i = 0;
-	while (arg[i] != '\0' && str[i] != '\0')
-	{
-		if (arg[i] != str[i])
-		{
-			return False;
-		}
-		i++;
-	}
-	return True;
 }
