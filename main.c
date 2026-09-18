@@ -31,11 +31,31 @@ int main(int argc, char *argv[])
 
 	do {
 		uint16_t line_size = sizeof(line);
+		Bool open_quote = False;
+		uint8_t start_quote_index = 0;
+		uint16_t i = 0;
 
-		if (fgets(line, line_size, fp) != NULL)
+		if (fgets(line, line_size, fp) == NULL)
 		{
-			printf("%s\n", line);
+			/* end of file */
+			break;
 		}
+
+		for (; i < line_size; i++)
+		{
+			if (line[i] == '"')
+			{
+				if (!(open_quote))
+				{
+					open_quote = True;
+				}
+				else
+				{
+					/* TODO handle string termination */
+				}
+			}
+		}
+
 	} while (1);
 
 
