@@ -1,6 +1,5 @@
 #include "header.h"
 
-void file_check(FILE *file_path, const char *filename);
 
 int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[])
 {
@@ -41,7 +40,8 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 						/* copy bytes from line into the key_value buffer */
 						key_value[i] = line[j];
 					}
-					/* TODO compare key_value to valid key lookup */
+
+					key_match(key_value, num_entries, json_entry);
 				}
 			}
 		}
@@ -52,12 +52,21 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 	return 0;
 }
 
-/*
-typedef struct
+uint16_t key_match(const char *key_value, uint16_t num_entries, json_data json_entry[])
 {
-	char *parent_object;
-	json_data_type data_type;
-	char *key_value;
-	void *content;
-} json_data;
-*/
+	uint16_t i = 0;
+	for (i = 0; i < num_entries; i++)
+	{
+		if (str_compare(key_value, json_entry->key_value))
+		{
+			return i;
+		}
+	}
+
+	fprintf(stderr, "failed to find the value: %s\n", key_value);
+	exit(1);
+
+	return 65535;
+}
+
+{
