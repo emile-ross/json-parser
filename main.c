@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-
-typedef enum
-{
-	False = 0,
-	True = 1
-} Bool;
+#include "header.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +17,7 @@ int main(int argc, char *argv[])
 
 	if (fp == NULL)
 	{
-		fprintf(stderr, "file not found \n");
+		fprintf(stderr,	"file not found\n");
 		return 1;	/*file not found */
 	}
 
