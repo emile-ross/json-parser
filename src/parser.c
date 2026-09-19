@@ -38,12 +38,12 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 				}
 				else
 				{
-					str_size = start_quote_index - i;
+					str_size = (uint32_t)(i - start_quote_index - 1);
 					key_value = malloc(str_size);
-					for (j = start_quote_index; j < i; j++)
+					for (j = 0; j < i; j++)
 					{
 						/* copy bytes from line into the key_value buffer */
-						key_value[i] = line[j];
+						key_value[j] = line[j + start_quote_index];
 					}
 
 					key_match(&success, key_value, num_entries, json_entry);
