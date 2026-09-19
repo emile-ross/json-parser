@@ -27,16 +27,13 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 			break;
 		}
 
-		for (i = 0; i < line_size; i++)
+		for (i = 0; line[i] != '\0'; i++)
 		{
+			printf("Itteration: %u\n", i);
+
 			if (line[i] == '"')
 			{
-				if (!(open_quote))
-				{
-					start_quote_index = i;
-					open_quote = True;
-				}
-				else
+				if (open_quote)
 				{
 					str_size = (uint32_t)(i - start_quote_index - 1);
 					key_value = malloc(str_size);
@@ -45,8 +42,14 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 						/* copy bytes from line into the key_value buffer */
 						key_value[j] = line[j + start_quote_index];
 					}
+					printf(key_value);
 
 					key_match(&success, key_value, num_entries, json_entry);
+				}
+				else
+				{
+					start_quote_index = i;
+					open_quote = True;
 				}
 			}
 		}
