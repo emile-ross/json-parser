@@ -36,12 +36,16 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 				if (open_quote)
 				{
 					str_size = (uint32_t)(i - start_quote_index - 1);
-					key_value = malloc(str_size);
-					for (j = 0; j < i; j++)
+					key_value = malloc(str_size + 1);
+					for (j = 0; j < str_size; j++)
 					{
 						/* copy bytes from line into the key_value buffer */
-						key_value[j] = line[j + start_quote_index];
+
+						/* reads from the quote start + 1 (skip quote) and then
+						 * add the j iterator for looping through the string */
+						key_value[j] = line[start_quote_index + j + 1];
 					}
+					key_value[str_size] = '\0';
 					printf(key_value);
 
 					key_match(&success, key_value, num_entries, json_entry);
@@ -68,9 +72,9 @@ uint16_t key_match(Bool *success, const char *key_value, uint16_t num_entries, j
 	uint16_t i = 0;
 	for (i = 0; i < num_entries; i++)
 	{
-		if (str_compare(key_value, json_entry->key_value))
+		if (str_compare(key_value, json_entry[i].key_value))
 		{
-			*(success) = False;
+			*(success) = True;
 			return i;
 		}
 	}
