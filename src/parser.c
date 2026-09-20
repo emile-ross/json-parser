@@ -15,6 +15,9 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	uint8_t j = 0;
 	char *key_value = NULL;
 
+	uint8_t current_lookup = 0;	/* store the current entry being looked up
+	if an entry is matched (found) the counter goes up */
+
 	file_check(fp, file_path);	/* checks for fp being NULL */
 
 	do {
@@ -28,37 +31,39 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			break;
 		}
 
-		while (line[strcspn(line + i, "\"{}[]:;")] != '\0')
+		while (line[i] != '\0')
 		{
-			if (line[i] == ';' && !(open_quote))
+			if (!(line[i] == '\t' || line[i] == ' '))
 			{
-				break;
-			}
-			else if (line[i] == '"' && !(open_quote))
-			{
-				open_quote = True;
-			}
-			else if (line[i] == '"' && !(key_specified))
-			{
-			}
-			else if (line[i] == '"' && !(key_specified))
-			{
-				for (j = 0; j < str_size; j++)
+				if (line[i] == ';' && !(open_quote))
 				{
-					/* copy bytes from line into the key_value buffer
-					 * reads from the quote start + 1 (skip quote) and then
-					 * add the j iterator for looping through the string  */
-					key_value[j] = line[start_quote_index + j + 1];
+					break;
+				}
+				else if (line[i] == '"' && !(open_quote))
+				{
+					open_quote = True;
+				}
+				else if (line[i] == '"' && !(key_specified))
+				{
+				}
+				else if (line[i] == '"' && !(key_specified))
+				{
+					for (j = 0; j < str_size; j++)
+					{
+						/* copy bytes from line into the key_value buffer
+						 * reads from the quote start + 1 (skip quote) and then
+						 * add the j iterator for looping through the string  */
+						key_value[j] = line[start_quote_index + j + 1];
+					}
+
+					printf(key_value);
+					key_value[str_size] = '\0';
+					key_match(&success, key_value, num_entries, json_entry);
 				}
 
-				printf(key_value);
-				key_value[str_size] = '\0';
-				key_match(&success, key_value, num_entries, json_entry);
+				/* valid cast since the line can't be larger */
+				i = (uint8_t)strcspn(line + i, reject);
 			}
-
-
-
-			i = strcspn(line + i, "\"{}[]:;");
 		}
 
 		/*
@@ -117,5 +122,5 @@ uint8_t key_match(Bool *success, const char *key_value, uint8_t num_entries, jso
 	exit(1);
 	
 	*(success) = False;
-	return 65535;
+	return 255;
 }
