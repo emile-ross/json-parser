@@ -27,15 +27,19 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 			break;
 		}
 
-		for (i = 0; line[i] != '\0';;)
+		while (line[strcspn(line + i, "\"{}[]:;")] != '\0')
 		{
-			int current_index = strcspn();
+			if (line[i] == ';' && !(open_quote))
+			{
+				break;
+			}
+
+			i = strcspn(line + i, "\"{}[]:;");
 		}
 
 		/*
 		for (i = 0; line[i] != '\0'; i++)
 		{
-			printf("Itteration: %u\n", i);
 
 			if (line[i] == '"')
 			{
