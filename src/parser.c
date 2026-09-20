@@ -27,6 +27,12 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 			break;
 		}
 
+		for (i = 0; line[i] != '\0';;)
+		{
+			int current_index = strcspn();
+		}
+
+		/*
 		for (i = 0; line[i] != '\0'; i++)
 		{
 			printf("Itteration: %u\n", i);
@@ -39,10 +45,10 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 					key_value = malloc(str_size + 1);
 					for (j = 0; j < str_size; j++)
 					{
-						/* copy bytes from line into the key_value buffer */
+						copy bytes from line into the key_value buffer
 
-						/* reads from the quote start + 1 (skip quote) and then
-						 * add the j iterator for looping through the string */
+						 reads from the quote start + 1 (skip quote) and then
+						 * add the j iterator for looping through the string 
 						key_value[j] = line[start_quote_index + j + 1];
 					}
 					key_value[str_size] = '\0';
@@ -57,6 +63,7 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 				}
 			}
 		}
+		*/
 
 		free(key_value);
 
