@@ -1,12 +1,16 @@
 #include "header.h"
 
+#define line_len 255
+
 int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry[])
 {
+	char *reject = 
 	FILE *fp = fopen(file_path, "r");
-	char line[256] = {0};	/* used for storing the line buffer in the file */
+	char *line = malloc(line_len + 1);	/* used for storing the line buffer in the file */
 	uint16_t current_lookup = 0;
 	uint16_t line_size = 0;
 	Bool open_quote = False;
+	Bool key_specified = False;
 	uint16_t start_quote_index = 0;
 	uint16_t i = 0;
 	uint16_t j = 0;
@@ -19,9 +23,8 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 		Bool success = False;
 		open_quote = False;
 		/* only valid since line is an array of chars */
-		line_size = sizeof(line);
 
-		if (fgets(line, line_size, fp) == NULL)
+		if (fgets(line, line_len, fp) == NULL)
 		{
 			/* end of file */
 			break;
@@ -33,6 +36,11 @@ int json_parse(const char *file_path, uint16_t num_entries, json_data json_entry
 			{
 				break;
 			}
+			else if (line[i] == '"' && !(open_quote))
+			{
+				open_quote = True;
+			}
+			else if (line[i] == '"' && !(key_specified))
 
 			i = strcspn(line + i, "\"{}[]:;");
 		}
