@@ -79,41 +79,9 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 				i = (uint8_t)strcspn(line + i, reject);
 			}
 		}
-
-		/*
-		for (i = 0; line[i] != '\0'; i++)
-		{
-
-			if (line[i] == '"')
-			{
-				if (open_quote)
-				{
-					str_size = (uint32_t)(i - start_quote_index - 1);
-					key_value = malloc(str_size + 1);
-					for (j = 0; j < str_size; j++)
-					{
-						copy bytes from line into the key_value buffer
-
-						 reads from the quote start + 1 (skip quote) and then
-						 * add the j iterator for looping through the string 
-						key_value[j] = line[start_quote_index + j + 1];
-					}
-					printf(key_value);
-
-					key_match(&key_success, key_value, num_entries, json_entry);
-				}
-				else
-				{
-					start_quote_index = i;
-					open_quote = True;
-				}
-			}
-		}
-		*/
-
-		free(key_value);
-
 	} while (num_entries > current_lookup);
+
+	free(line);
 
 	fclose(fp);
 
