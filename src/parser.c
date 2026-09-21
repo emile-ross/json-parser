@@ -12,6 +12,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	Bool key_specified = False;
 	uint8_t start_quote_index = 0;
 
+	uint16_t line_number = 0;
 	uint8_t i = 0;
 	uint8_t j = 0;
 
@@ -36,18 +37,23 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 		while (line[i] != '\0')
 		{
+			Bool end_line = False;
 			if (!(line[i] == '\t' || line[i] == ' '))
 			{
 				switch (line[i])
 				{
 				case ';':
-					if (open_quote)
+					if (open_quote || start_quote_index)
 					{
-						fprintf(stderr, "Quotes cannot span across multiple lines");
+						fprintf(stderr, "Quotes cannot span across multiple lines\n");
+						fprintf(stderr, "The following quote is never ended: %s\n", line + start_quote_index - 1);
 						exit(1);
 					}
+					end_line = True;
 					break;
+					
 
+				case '=':
 				case ':':
 					if (key_success)
 						key_specified = True;
@@ -76,9 +82,12 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 				}
 
 				/* valid cast since the line can't be larger */
-				i = (uint8_t)strcspn(line + i, reject);
+				if (!end_line)
+					i = (uint8_t)strcspn(line + i, reject);
 			}
 		}
+
+		line_number++;
 	} while (num_entries > current_lookup);
 
 	free(line);
