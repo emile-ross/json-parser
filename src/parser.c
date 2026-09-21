@@ -74,10 +74,30 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						key_value[str_size] = '\0';
 						key_success = False;
 						key_match(&key_success, key_value, num_entries, json_entry);
+						}
+						else 
+						{
+							open_quote = True;
+						}
+						break;
 					}
-					else 
+					/* OTHERWISE if  the key_specified boolean IS TRUE 
+					 * this will fallthrough onto the default case (since this means we are now checking for the result (assignement of a string) */
+					__attribute__ ((fallthrough));
+				default:
+					/* full expression is only true if the start_quote_index */
+					if (!(start_quote_index))
 					{
-						open_quote = True;
+						if (key_specified)
+						{
+							if (json_entry[current_lookup].data_type == STRING)
+							{
+								if (line[i] == '"')
+								{
+									start_quote_index = i + 1;
+								}
+							}
+						}
 					}
 				}
 
