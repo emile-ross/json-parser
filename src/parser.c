@@ -7,12 +7,15 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	char *reject = "\"{}[]:;";
 	FILE *fp = fopen(file_path, "r");
 	char *line = malloc(line_len + 1);	/* used for storing the line buffer in the file */
+
 	Bool open_quote = False;
 	Bool key_specified = False;
 	uint8_t start_quote_index = 0;
+
 	uint8_t i = 0;
-	uint8_t str_size = 0;
 	uint8_t j = 0;
+
+	uint8_t str_size = 0;
 	char *key_value = NULL;
 
 	uint8_t current_lookup = 0;	/* store the current entry being looked up
@@ -35,19 +38,19 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 		{
 			if (!(line[i] == '\t' || line[i] == ' '))
 			{
-				if (line[i] == ';' && !(open_quote))
+				switch (line[i])
 				{
-					break;
-				}
-				else if (line[i] == '"' && !(open_quote))
-				{
+				case ';':
+					if (open_quote)
+					{
+						fprintf(stderr, "");
+					}
+					else
+					{
+						break;
+					}
+				case '"':
 					open_quote = True;
-				}
-				else if (line[i] == '"' && !(key_specified))
-				{
-				}
-				else if (line[i] == '"' && !(key_specified))
-				{
 					for (j = 0; j < str_size; j++)
 					{
 						/* copy bytes from line into the key_value buffer
