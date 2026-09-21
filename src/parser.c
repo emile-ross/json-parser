@@ -45,23 +45,38 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					{
 						fprintf(stderr, "");
 					}
-					else
-					{
-						break;
-					}
-				case '"':
-					open_quote = True;
-					for (j = 0; j < str_size; j++)
-					{
-						/* copy bytes from line into the key_value buffer
-						 * reads from the quote start + 1 (skip quote) and then
-						 * add the j iterator for looping through the string  */
-						key_value[j] = line[start_quote_index + j + 1];
-					}
+					break;
 
-					printf(key_value);
-					key_value[str_size] = '\0';
-					key_match(&success, key_value, num_entries, json_entry);
+				case ':':
+					if (success)
+					{
+					}
+					break;
+				case '"':
+					if (open_quote)
+					{
+						open_quote = False;
+						for (j = 0; j < str_size; j++)
+						{
+							/* copy bytes from line into the key_value buffer
+							 * reads from the quote start + 1 (skip quote) and then
+							 * add the j iterator for looping through the string  */
+							key_value[j] = line[start_quote_index + j + 1];
+						}
+
+						printf(key_value);
+						key_value[str_size] = '\0';
+						success = False;
+						key_match(&success, key_value, num_entries, json_entry);
+						if ()
+						{
+							key_specified = True;
+						}
+					}
+					else 
+					{
+						open_quote = True;
+					}
 				}
 
 				/* valid cast since the line can't be larger */
