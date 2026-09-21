@@ -80,7 +80,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						key_value[j] = line[start_quote_index + j + 1];
 					}
 
-					printf(key_value);
+					printf("key value -> %s\n", key_value);
 					key_value[str_size] = '\0';
 					key_success = False;
 					key_match(&key_success, key_value, num_entries, json_entry);

@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
 
 	json_data entries[2] = { 0 };
 
-	entries[1] = indenting;
-	entries[2] = program_name;
+	entries[0] = indenting;
+	entries[1] = program_name;
 
 	json_parse(file_path, 2, entries);
 
