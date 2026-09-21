@@ -63,27 +63,28 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			case '"':
 				if (!key_specified)
 				{
-					if (open_quote)
-					{
-						open_quote = False;
-						for (j = 0; j < str_size; j++)
-						{
-							/* copy bytes from line into the key_value buffer
-							 * reads from the quote start + 1 (skip quote) and then
-							 * add the j iterator for looping through the string  */
-							key_value[j] = line[start_quote_index + j + 1];
-						}
-
-						printf(key_value);
-						key_value[str_size] = '\0';
-						key_success = False;
-						key_match(&key_success, key_value, num_entries, json_entry);
-						start_quote_index = 0;
-					}
-					else 
+					if (!open_quote)
 					{
 						open_quote = True;
+						start_quote_index = i + 1;
+						break;
 					}
+
+					open_quote = False;
+
+					for (j = 0; j < str_size; j++)
+					{
+						/* copy bytes from line into the key_value buffer
+						 * reads from the quote start + 1 (skip quote) and then
+						 * add the j iterator for looping through the string  */
+						key_value[j] = line[start_quote_index + j + 1];
+					}
+
+					printf(key_value);
+					key_value[str_size] = '\0';
+					key_success = False;
+					key_match(&key_success, key_value, num_entries, json_entry);
+					start_quote_index = 0;
 					break;
 				}
 				/* OTHERWISE if  the key_specified boolean IS TRUE 
@@ -91,16 +92,13 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 				__attribute__ ((fallthrough));
 			default:
 				/* full expression is only true if the start_quote_index */
-				if (!(start_quote_index))
+				if ((!start_quote_index) && key_specified)
 				{
-					if (key_specified)
+					if (json_entry[current_lookup].data_type == STRING)
 					{
-						if (json_entry[current_lookup].data_type == STRING)
+						if (line[i] == '"')
 						{
-							if (line[i] == '"')
-							{
-								start_quote_index = i + 1;
-							}
+							start_quote_index = i + 1;
 						}
 					}
 				}
