@@ -119,22 +119,3 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 	return 0;
 }
-
-uint8_t key_match(Bool *success, const char *key_value, uint8_t num_entries, json_data json_entry[])
-{
-	uint8_t i = 0;
-	for (i = 0; i < num_entries; i++)
-	{
-		if (str_compare(key_value, json_entry[i].key_value))
-		{
-			*(success) = True;
-			return i;
-		}
-	}
-
-	fprintf(stderr, "failed to find the value: %s\n", key_value);
-	exit(1);
-	
-	*(success) = False;
-	return 255;
-}
