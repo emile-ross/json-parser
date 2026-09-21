@@ -12,7 +12,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	Bool key_specified = False;
 	uint8_t start_quote_index = 0;
 
-	uint16_t line_number = 0;
+	uint16_t line_number = 0; 
 	uint8_t i = 0;
 	uint8_t j = 0;
 
@@ -42,6 +42,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			{
 				continue;
 			}
+
 			switch (line[i])
 			{
 			case ';':
@@ -52,8 +53,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					exit(1);
 				}
 				end_line = True;
-				break;
-				
+				continue;
 
 			case '=':
 			case ':':
@@ -88,7 +88,8 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					break;
 				}
 				/* OTHERWISE if  the key_specified boolean IS TRUE 
-				 * this will fallthrough onto the default case (since this means we are now checking for the result (assignement of a string) */
+				 * this will fallthrough onto the default case 
+				 * (since this means we are now checking for the result (assignement of a string) */
 				__attribute__ ((fallthrough));
 			default:
 				/* full expression is only true if the start_quote_index */
@@ -99,6 +100,22 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						if (line[i] == '"')
 						{
 							start_quote_index = i + 1;
+						}
+					}
+					else if (json_entry[current_lookup].data_type == INTEGER)
+					{
+						if (line[i] == '"')
+						{
+							fprintf(stderr, "unexpected symbol %c in integer type\n", line[i]);
+							exit(1);
+						}
+					}
+					else if (json_entry[current_lookup].data_type == FLOAT)
+					{
+						if (line[i] == '"')
+						{
+							fprintf(stderr, "unexpected symbol '%c' in floating type\n", line[i]);
+							exit(1);
 						}
 					}
 				}
@@ -113,7 +130,6 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	} while (num_entries > current_lookup);
 
 	free(line);
-
 	fclose(fp);
 
 	return 0;
