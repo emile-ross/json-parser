@@ -77,18 +77,22 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					open_quote = False;
 					str_size = (uint8_t)strcspn(line + start_quote_index, "\"");
 
+					if (key_value != NULL)
+					{
+						free(key_value);
+					}
 
-					printf("key value -> %s\n", key_value);
 					key_value = smalloc(str_size + 1);
 
 					/* copy bytes from line into the key_value buffer 
 					 * memcpy() will only copy 'str_size' bytes into the key_value buffer */
 					memcpy(key_value, line + start_quote_index, str_size);
 					key_value[str_size] = '\0';
-
+					printf("key value -> %s\n", key_value);	/* prints the key_value as a test */
 
 					key_success = False;
 					current_entry = key_match(&key_success, key_value, num_entries, json_entry);
+
 					printf("entry : %d\n", current_entry);
 
 					start_quote_index = 0;
@@ -140,7 +144,10 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 		line_number++;
 	} while (num_entries > num_lookups && line_number < 1024);
 
-	free(key_value);
+	if (key_value != NULL)
+	{
+		free(key_value);
+	}
 	free(line);
 	fclose(fp);
 
