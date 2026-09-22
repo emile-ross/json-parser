@@ -2,6 +2,8 @@
 
 #define line_len 255
 
+Bool verbose = True;
+
 int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[])
 {
 	char *reject = "\"{}[]:;";
@@ -52,9 +54,12 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			case ';':
 				if (!(i > start_quote_index + str_size))
 				{
-					fprintf(stderr, "Quotes cannot span across multiple lines\n");
-					fprintf(stderr, "The following quote is never ended: %s\n", line + start_quote_index - 1);
-					exit(1);
+					if (open_quote || key_value == NULL)
+					{
+						fprintf(stderr, "Quotes cannot span across multiple lines\n");
+						fprintf(stderr, "The following quote is never ended: %s\n", line + start_quote_index - 1);
+						exit(1);
+					}
 				}
 				end_line = True;
 				i++;
@@ -114,6 +119,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						{
 							start_quote_index = i + 1;
 						}
+						printf("string type\n");
 					}
 					else if (json_entry[current_entry].data_type == INTEGER)
 					{
@@ -129,7 +135,8 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						str_size = 1 + (uint8_t)strcspn(line + i, "dDiI;");
 						content = smalloc(str_size);
 						memcpy(content, line + i, str_size);
-						printf("content %s\n", content);
+						if (verbose)
+							printf("content %s\n", content);
 					}
 					else if (json_entry[current_entry].data_type == FLOAT)
 					{
