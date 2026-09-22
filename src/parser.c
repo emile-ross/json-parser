@@ -28,6 +28,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 		Bool key_success = False;
 		open_quote = False;
 		i = 0;
+		key_value = NULL;
 		/* only valid since line is an array of chars */
 
 		if (fgets(line, line_len, fp) == NULL)
@@ -48,8 +49,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			switch (line[i])
 			{
 			case ';':
-
-				if (open_quote || start_quote_index)
+				if (open_quote && key_value == NULL)
 				{
 					fprintf(stderr, "Quotes cannot span across multiple lines\n");
 					fprintf(stderr, "The following quote is never ended: %s\n", line + start_quote_index - 1);
@@ -74,7 +74,6 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						break;
 					}
 
-					open_quote = False;
 					str_size = (uint8_t)strcspn(line + start_quote_index, "\"");
 
 					if (key_value != NULL)
@@ -96,6 +95,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					printf("entry : %d\n", current_entry);
 
 					start_quote_index = 0;
+					open_quote = False;
 					break;
 				}
 				/* OTHERWISE if  the key_specified boolean IS TRUE 
@@ -135,7 +135,10 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 			/* valid cast since the line can't be larger */
 			if (!end_line)
+			{
+				/* jumps to the next characters (ignore whitespace) */
 				i += (uint8_t)strcspn(line + i, reject);
+			}
 			else
 				break;
 			i++;

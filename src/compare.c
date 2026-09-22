@@ -28,6 +28,7 @@ uint8_t key_match(Bool *success, const char *key_value, uint8_t num_entries, jso
 	}
 
 	fprintf(stderr, "failed to find the value: %s\n", key_value);
+	fprintf(stderr, "this value was never being looked up\n");
 	
 	*(success) = False;
 	return 255;
