@@ -16,7 +16,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	uint8_t i = 0;
 	uint8_t j = 0;
 
-	uint8_t str_size = 0;
+	uint8_t str_size = 16;	/* TODO variable length ( based on strcspn() ) */
 	char *key_value = NULL;
 
 	uint8_t current_lookup = 0;	/* store the current entry being looked up
@@ -55,7 +55,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 				end_line = True;
 				continue;
 
-			case '=':
+			case '=':	/* both characters are accepted */
 			case ':':
 				if (key_success)
 					key_specified = True;
@@ -77,6 +77,10 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						/* copy bytes from line into the key_value buffer
 						 * reads from the quote start + 1 (skip quote) and then
 						 * add the j iterator for looping through the string  */
+						if (key_value == NULL)
+						{
+							key_value = malloc(str_size);
+						}
 						key_value[j] = line[start_quote_index + j + 1];
 					}
 
@@ -91,6 +95,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 				 * this will fallthrough onto the default case 
 				 * (since this means we are now checking for the result (assignement of a string) */
 				__attribute__ ((fallthrough));
+
 			default:
 				/* full expression is only true if the start_quote_index */
 				if ((!start_quote_index) && key_specified)
@@ -129,6 +134,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 		line_number++;
 	} while (num_entries > current_lookup);
 
+	free(key_value);
 	free(line);
 	fclose(fp);
 
