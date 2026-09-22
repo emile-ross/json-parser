@@ -56,6 +56,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					exit(1);
 				}
 				end_line = True;
+				i++;
 				continue;
 
 			case '=':	/* both characters are accepted */
@@ -83,7 +84,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						 * add the j iterator for looping through the string  */
 						if (key_value == NULL)
 						{
-							key_value = malloc(str_size);
+							key_value = malloc(str_size + 1);
 						}
 						key_value[j] = line[start_quote_index + j];
 					}
@@ -133,7 +134,9 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 			/* valid cast since the line can't be larger */
 			if (!end_line)
-				i = (uint8_t)strcspn(line + i, reject);
+				i += (uint8_t)strcspn(line + i, reject);
+			else
+				break;
 			i++;
 		}
 
