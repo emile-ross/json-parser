@@ -16,7 +16,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	uint8_t i = 0;
 	uint8_t j = 0;
 
-	uint8_t str_size = 16;	/* TODO variable length ( based on strcspn() ) */
+	uint8_t str_size = 0;	/* TODO variable length ( based on strcspn() ) */
 	char *key_value = NULL;
 
 	uint8_t current_lookup = 0;	/* store the current entry being looked up
@@ -71,6 +71,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					}
 
 					open_quote = False;
+					str_size = (uint8_t)strcspn(line + start_quote_index, "\"") - start_quote_index;
 
 					for (j = 0; j < str_size; j++)
 					{
@@ -87,7 +88,8 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					printf("key value -> %s\n", key_value);
 					key_value[str_size] = '\0';
 					key_success = False;
-					key_match(&key_success, key_value, num_entries, json_entry);
+					current_entry = key_match(&key_success, key_value, num_entries, json_entry);
+					printf("entry : %d\n", current_entry);
 					start_quote_index = 0;
 					break;
 				}
@@ -132,7 +134,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 		}
 
 		line_number++;
-	} while (num_entries > current_lookup);
+	} while (num_entries > current_lookup && line_number < 1024);
 
 	free(key_value);
 	free(line);
