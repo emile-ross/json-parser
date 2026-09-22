@@ -14,7 +14,6 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 	uint16_t line_number = 0; 
 	uint8_t i = 0;
-	uint8_t j = 0;
 
 	uint8_t str_size = 0;
 	char *key_value = NULL;
@@ -49,6 +48,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			switch (line[i])
 			{
 			case ';':
+
 				if (open_quote || start_quote_index)
 				{
 					fprintf(stderr, "Quotes cannot span across multiple lines\n");
@@ -77,23 +77,20 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					open_quote = False;
 					str_size = (uint8_t)strcspn(line + start_quote_index, "\"");
 
-					for (j = 0; j < str_size; j++)
-					{
-						/* copy bytes from line into the key_value buffer
-						 * reads from the quote start + 1 (skip quote) and then
-						 * add the j iterator for looping through the string  */
-						if (key_value == NULL)
-						{
-							key_value = smalloc(str_size + 1);
-						}
-						key_value[j] = line[start_quote_index + j];
-					}
 
 					printf("key value -> %s\n", key_value);
+					key_value = smalloc(str_size + 1);
+
+					/* copy bytes from line into the key_value buffer 
+					 * memcpy() will only copy 'str_size' bytes into the key_value buffer */
+					memcpy(key_value, line + start_quote_index, str_size);
 					key_value[str_size] = '\0';
+
+
 					key_success = False;
 					current_entry = key_match(&key_success, key_value, num_entries, json_entry);
 					printf("entry : %d\n", current_entry);
+
 					start_quote_index = 0;
 					break;
 				}
