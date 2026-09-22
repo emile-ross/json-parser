@@ -19,13 +19,13 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	uint8_t str_size = 0;	/* TODO variable length ( based on strcspn() ) */
 	char *key_value = NULL;
 
-	uint8_t current_lookup = 0;	/* store the current entry being looked up
+	uint8_t num_lookups = 0;	/* counts the number of entries looked up exits when everything is done */
+	uint8_t current_entry = 0;	/* store the current entry being looked up
 	if an entry is matched (found) the counter goes up */
 
 	file_check(fp, file_path);	/* checks for fp being NULL */
 
 	do {
-		uint8_t current_entry = 0;
 		Bool key_success = False;
 		open_quote = False;
 		i = 0;
@@ -106,14 +106,14 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 				/* full expression is only true if the start_quote_index */
 				if ((!start_quote_index) && key_specified)
 				{
-					if (json_entry[current_lookup].data_type == STRING)
+					if (json_entry[current_entry].data_type == STRING)
 					{
 						if (line[i] == '"')
 						{
 							start_quote_index = i + 1;
 						}
 					}
-					else if (json_entry[current_lookup].data_type == INTEGER)
+					else if (json_entry[current_entry].data_type == INTEGER)
 					{
 						if (line[i] == '"')
 						{
@@ -121,7 +121,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 							exit(1);
 						}
 					}
-					else if (json_entry[current_lookup].data_type == FLOAT)
+					else if (json_entry[current_entry].data_type == FLOAT)
 					{
 						if (line[i] == '"')
 						{
@@ -141,7 +141,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 		}
 
 		line_number++;
-	} while (num_entries > current_lookup && line_number < 1024);
+	} while (num_entries > num_lookups && line_number < 1024);
 
 	free(key_value);
 	free(line);
