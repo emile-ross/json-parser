@@ -6,7 +6,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 {
 	char *reject = "\"{}[]:;";
 	FILE *fp = fopen(file_path, "r");
-	char *line = malloc(line_len + 1);	/* used for storing the line buffer in the file */
+	char *line = smalloc(line_len + 1);	/* used for storing the line buffer in the file */
 
 	Bool open_quote = False;
 	Bool key_specified = False;
@@ -16,7 +16,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	uint8_t i = 0;
 	uint8_t j = 0;
 
-	uint8_t str_size = 0;	/* TODO variable length ( based on strcspn() ) */
+	uint8_t str_size = 0;
 	char *key_value = NULL;
 
 	uint8_t num_lookups = 0;	/* counts the number of entries looked up exits when everything is done */
@@ -84,7 +84,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						 * add the j iterator for looping through the string  */
 						if (key_value == NULL)
 						{
-							key_value = malloc(str_size + 1);
+							key_value = smalloc(str_size + 1);
 						}
 						key_value[j] = line[start_quote_index + j];
 					}
