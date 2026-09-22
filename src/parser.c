@@ -17,6 +17,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 	uint8_t str_size = 0;
 	char *key_value = NULL;
+	char *content = NULL;
 
 	uint8_t num_lookups = 0;	/* counts the number of entries looked up exits when everything is done */
 	uint8_t current_entry = 0;	/* store the current entry being looked up
@@ -49,7 +50,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			switch (line[i])
 			{
 			case ';':
-				if (open_quote && key_value == NULL)
+				if (!(i > start_quote_index + str_size))
 				{
 					fprintf(stderr, "Quotes cannot span across multiple lines\n");
 					fprintf(stderr, "The following quote is never ended: %s\n", line + start_quote_index - 1);
@@ -121,6 +122,14 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 							fprintf(stderr, "unexpected symbol %c in integer type\n", line[i]);
 							exit(1);
 						}
+						if (content != NULL)
+						{
+							free(content);
+						}
+						str_size = 1 + (uint8_t)strcspn(line + i, "dDiI;");
+						content = smalloc(str_size);
+						memcpy(content, line + i, str_size);
+						printf("content %s\n", content);
 					}
 					else if (json_entry[current_entry].data_type == FLOAT)
 					{
