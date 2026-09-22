@@ -25,8 +25,10 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	file_check(fp, file_path);	/* checks for fp being NULL */
 
 	do {
+		uint8_t current_entry = 0;
 		Bool key_success = False;
 		open_quote = False;
+		i = 0;
 		/* only valid since line is an array of chars */
 
 		if (fgets(line, line_len, fp) == NULL)
@@ -40,6 +42,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			Bool end_line = False;
 			if (line[i] == '\t' || line[i] == ' ')
 			{
+				i++;
 				continue;
 			}
 
@@ -71,7 +74,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					}
 
 					open_quote = False;
-					str_size = (uint8_t)strcspn(line + start_quote_index, "\"") - start_quote_index;
+					str_size = (uint8_t)strcspn(line + start_quote_index, "\"");
 
 					for (j = 0; j < str_size; j++)
 					{
@@ -82,7 +85,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						{
 							key_value = malloc(str_size);
 						}
-						key_value[j] = line[start_quote_index + j + 1];
+						key_value[j] = line[start_quote_index + j];
 					}
 
 					printf("key value -> %s\n", key_value);
@@ -131,6 +134,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 			/* valid cast since the line can't be larger */
 			if (!end_line)
 				i = (uint8_t)strcspn(line + i, reject);
+			i++;
 		}
 
 		line_number++;
