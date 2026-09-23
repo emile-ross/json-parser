@@ -24,5 +24,5 @@ void *smalloc(size_t size)
 		fprintf(stderr, "malloc() fn failed to allocated memory of size %lu on the heap\n", size);
 		exit(1);
 	}
-	return ptr;
+	return ptr;	/* return pointer to buffer */
 }

@@ -141,14 +141,16 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 							exit(1);
 						}
 						if (content != NULL)
+						if ((*endptr != ';') && (*endptr != '\0') && (*endptr != '\n') && (*endptr != ' ') && (*endptr != '\t'))
 						{
-							free(content);
+							fprintf(stderr, "invalid character '%c' after integer\n", *endptr);
+							exit(1);
 						}
-						str_size = 1 + (uint8_t)strcspn(line + i, "dDiI;");
-						content = smalloc(str_size);
-						memcpy(content, line + i, str_size);
+						}
 						if (verbose)
 							printf("integer value -> %d\n", json_entry[current_entry].integer_value);
+					
+						i = (uint8_t)(endptr - line);
 					}
 					else if (json_entry[current_entry].data_type == FLOAT)
 					{
