@@ -17,3 +17,7 @@
 /* checks.c */
 	void *smalloc(size_t size);
 	void file_check(FILE *file_path, const char *filename);
+
+#define INT32MIN (-2147483647)
+#define INT32MAX (2147483647)
+#define UINT32MAX (4294967295)

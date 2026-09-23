@@ -146,7 +146,15 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 							fprintf(stderr, "invalid character '%c' after integer\n", *endptr);
 							exit(1);
 						}
+					
+						if (value < INT32MIN || value > INT32MAX)
+						{
+							fprintf(stderr, "integer out of bounds : %ld\n", value);
+							exit(1);
 						}
+					
+						/* TODO store value in buffer allocated (sizeof(uint64_t) ) */
+					
 						if (verbose)
 							printf("integer value -> %d\n", json_entry[current_entry].integer_value);
 					
