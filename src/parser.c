@@ -21,6 +21,9 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 	char *key_value = NULL;
 	char *content = NULL;
 
+	char *endptr = NULL;
+	long value = 0;
+
 	uint8_t num_lookups = 0;	/* counts the number of entries looked up exits when everything is done */
 	uint8_t current_entry = 0;	/* store the current entry being looked up
 	if an entry is matched (found) the counter goes up */
@@ -128,6 +131,15 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 							fprintf(stderr, "unexpected symbol %c in integer type\n", line[i]);
 							exit(1);
 						}
+					
+						value = strtol(line + i, &endptr, 10);
+					
+						/* no characters are valid */
+						if (endptr == line + i)
+						{
+							fprintf(stderr, "invalid integer: %s\n", line + i);
+							exit(1);
+						}
 						if (content != NULL)
 						{
 							free(content);
@@ -136,7 +148,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						content = smalloc(str_size);
 						memcpy(content, line + i, str_size);
 						if (verbose)
-							printf("content %s\n", content);
+							printf("integer value -> %d\n", json_entry[current_entry].integer_value);
 					}
 					else if (json_entry[current_entry].data_type == FLOAT)
 					{
