@@ -19,7 +19,6 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 
 	uint8_t str_size = 0;
 	char *key_value = NULL;
-	char *content = NULL;
 
 	char *endptr = NULL;
 	long value = 0;
@@ -126,9 +125,10 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 					}
 					else if (json_entry[current_entry].data_type == INTEGER)
 					{
+					
 						if (line[i] == '"')
 						{
-							fprintf(stderr, "unexpected symbol %c in integer type\n", line[i]);
+							fprintf(stderr, "unexpected symbol '\"' in integer type\n");
 							exit(1);
 						}
 					
@@ -140,7 +140,8 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 							fprintf(stderr, "invalid integer: %s\n", line + i);
 							exit(1);
 						}
-						if (content != NULL)
+					
+						/* check the character following the integer */
 						if ((*endptr != ';') && (*endptr != '\0') && (*endptr != '\n') && (*endptr != ' ') && (*endptr != '\t'))
 						{
 							fprintf(stderr, "invalid character '%c' after integer\n", *endptr);
@@ -156,7 +157,7 @@ int json_parse(const char *file_path, uint8_t num_entries, json_data json_entry[
 						/* TODO store value in buffer allocated (sizeof(uint64_t) ) */
 					
 						if (verbose)
-							printf("integer value -> %d\n", json_entry[current_entry].integer_value);
+							printf("integer value -> %ld\n", value);
 					
 						i = (uint8_t)(endptr - line);
 					}
