@@ -16,6 +16,9 @@
 	void *smalloc(size_t size);
 	void file_check(FILE *file_path, const char *filename);
 
+/* integers */
+	void parse_integer(const char *str, int32_t *result);
+
 
 #define INT16MAX (32767)
 #define INT16MIN (-32767)
