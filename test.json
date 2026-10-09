@@ -1,7 +1,12 @@
 {
-	"countries": ["Canada\"CAS", "United States"],
+	"countries": [["Canada\"CAS", "Ontario"], ["United States", "California"]],
 	"calling code": "+1-XXX-XXX-XXXX",
 	"population": 40467728,
 	"currencies": ["CAD", "USD"],
 	"cold": true
 }
+
+
+
+
+

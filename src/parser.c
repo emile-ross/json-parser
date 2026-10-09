@@ -1,5 +1,4 @@
 #include "header.h"
-#include <ctype.h>
 
 #define LINE_LEN 4096
 #define STARTING_ALLOCATION 512
@@ -108,7 +107,7 @@ int json_parse(const char *file_path, uint32_t num_entries, json_data json_entry
 		/* Arrays: ["California", 1, true, null, { Object }] */
 		/* This Array parser is only parsing string, number values. */
 		case '[':
-			i = json_array_parser(&json_entry[current_entry], line, i);
+			i = json_array_parser(json_entry[current_entry].content, line, i);
 			state = EXPECT_KEY;
 			num_lookups++;
 			break; 
@@ -233,13 +232,23 @@ int json_parse(const char *file_path, uint32_t num_entries, json_data json_entry
 						exit(1);
 					}
 				}
-				else if (json_entry[current_entry].type.data_type == BOOL && json_entry[current_entry].type.content_type == VALUE)
-				{
-					content = smalloc(sizeof(Bool));
-					*content = parse_bool(&fail, line + i);
-					json_entry[current_entry].content->value.data.boolean = *content;
-					free(content);
-					
+				else if (json_entry[current_entry].type.data_type == BOOL &&
+						json_entry[current_entry].type.content_type == VALUE)
+				{				
+					json_entry[current_entry].content->type = VALUE;
+					json_entry[current_entry].content->value.data.boolean =
+						parse_bool(&fail, line + i);
+				
+					if (fail)
+					{
+						fprintf(stderr, "Invalid boolean: %.10s\n", line + i);
+						exit(EXIT_FAILURE);
+					}
+				
+					i += strncmp(line + i, "true", 4) == 0 ? 3 : 4;
+				
+					state = EXPECT_KEY;
+					num_lookups++;
 				}
 			}
 		}
@@ -250,6 +259,10 @@ int json_parse(const char *file_path, uint32_t num_entries, json_data json_entry
 
 	return 0;
 }
+
+
+
+
 
 
 

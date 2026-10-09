@@ -1,7 +1,6 @@
 typedef enum
 {
-	UNKNOWN = 0,
-	INTEGER,
+	INTEGER = 1,
 	FLOAT,
 	STRING,
 	CHAR,
@@ -24,7 +23,13 @@ typedef enum
 
 typedef enum 
 {
+	UNKNOWN = 0,
 	VALUE,
 	ARRAY,
 	OBJECT
 } json_content_type;
+
+
+
+
+

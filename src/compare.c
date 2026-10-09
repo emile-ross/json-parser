@@ -14,6 +14,24 @@ Bool str_compare(const char *arg, const char *str)
 	}
 	return True;
 }
+/* With size version */
+Bool str_n_compare(const char *arg, const char *str, size_t size)
+{
+    size_t i = 0;
+
+    while (i < size)
+    {
+        if (arg[i] != str[i])
+            return False;
+
+        if (arg[i] == '\0')
+            return True;
+
+        i++;
+    }
+
+    return True;
+}
 
 uint32_t key_match(Bool *fail, const char *key_value, uint32_t num_entries, json_data json_entry[])
 {
