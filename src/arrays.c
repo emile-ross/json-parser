@@ -19,6 +19,9 @@ size_t json_array_parser(json_content *content, char *line, size_t c_pos)
 	Bool buffer_changed = False;
 	Bool recursion = False;
 	Bool reached_end = False; 
+
+	/* variable declaration end */
+
 	/* Only 2 for now. */
 	content->array = smalloc(3 * sizeof(json_value));
 	content->recursive_content = smalloc(3 * sizeof(json_content));	

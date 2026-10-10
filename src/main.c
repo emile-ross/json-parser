@@ -140,7 +140,8 @@ int main(int argc, char *argv[])
 			case UNKNOWN:
 				break;
 			case OBJECT:
-				/* TODO handle objects */
+				/* TODO handle objects 
+				 * call parser recursively while narrowing down the contents */
 				break;
 		}
 	}
