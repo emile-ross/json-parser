@@ -39,3 +39,20 @@ void *srealloc(void *ptr, size_t size)
 	}
 	return ptr;	/* return pointer to buffer */
 }
+
+/* free every single node in the linked list */
+void sfree(struct memory_layout_node *node)
+{
+	struct memory_layout_node memory_region = { NULL, False, NULL };
+	int i = 0;
+
+	for (i = 0;; i++)
+	{
+
+		if (allocated)
+		{
+		}
+	}
+}
+
+/* TODO: declare a function getting the next node */

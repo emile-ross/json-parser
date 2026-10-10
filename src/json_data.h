@@ -42,7 +42,3 @@ typedef struct
  * json_data[].content.value.data.(type[string, integer, ffloat or boolean]) */
 
 
-
-
-
-
