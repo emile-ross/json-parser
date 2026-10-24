@@ -1,5 +1,13 @@
 {
-	"countries": [["Canada\"CAS", "Ontario"], ["United States", "California"]],
+	"countries": [
+					["Canada\"CAS", 100000], 
+					["United States", 100000], 
+					["California", 100000],
+					["Ontario", 100000],
+					["Texas", 1000000],
+					["Ottawa", 100000],
+					["New York", "New York City"],
+			],
 	"calling code": "+1-XXX-XXX-XXXX",
 	"population": 40467728,
 	"currencies": ["CAD", "USD"],

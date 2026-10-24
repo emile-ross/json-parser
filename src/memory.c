@@ -83,6 +83,8 @@ void *smalloc(struct memory_layout_node *node, size_t size)
 void *srealloc(struct memory_layout_node *node, void *ptr, size_t size)
 {
 	struct memory_layout_node *last_node = NULL;
+	struct memory_layout_node *cur = NULL;
+	void *old_ptr = ptr;
 	if (size <= 0)
 	{
 		fprintf(stderr, "Invalid realloc() call with size %lu\n", (unsigned long)size);
@@ -102,6 +104,14 @@ void *srealloc(struct memory_layout_node *node, void *ptr, size_t size)
 
 	if (node != NULL)
 	{
+		for (cur = node; cur != NULL; cur = cur->next_node)
+		{
+			if (cur->allocated && old_ptr != NULL && cur->ptr == old_ptr)
+			{
+				cur->ptr = ptr;
+				return ptr;
+			}
+		}
 		last_node = get_last_node(node);
 		last_node->next_node = malloc(sizeof(struct memory_layout_node));
 		if (last_node->next_node == NULL)

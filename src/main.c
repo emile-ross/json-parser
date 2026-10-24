@@ -143,8 +143,12 @@ int main(int argc, char *argv[])
 				*/
 				for (b = 0; entries[i].content->recursive_content && entries[i].content->recursive_content_count > b; b++) {
 					for (j = 0;  entries[i].content->recursive_content[b].array[j].type.content_type != UNKNOWN; j++) {
-						printf("Recursion Array [%d]. value: %s\n", j,
-							entries[i].content->recursive_content[b].array[j].data.string);
+						if (entries[i].content->recursive_content[b].array[j].type.data_type == STRING) 
+							printf("Recursion Array [%d]. value_str: %s\n", j,
+								entries[i].content->recursive_content[b].array[j].data.string);
+						if (entries[i].content->recursive_content[b].array[j].type.data_type == INTEGER)
+							printf("Recursion Array [%d]. value_int: %" PRIu64 "\n", j,
+								entries[i].content->recursive_content[b].array[j].data.integer);
 					}
 				}
 				break;

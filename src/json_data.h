@@ -8,7 +8,6 @@ typedef struct
 	json_data_type data_type;
 } json_type;
 
-
 typedef struct 
 {
 	union {

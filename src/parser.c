@@ -1,8 +1,5 @@
 #include "header.h"
 
-#define LINE_LEN 4096
-#define STARTING_ALLOCATION 512
-
 const Bool verbose = True;
 
 int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t num_entries, json_data json_entry[])
