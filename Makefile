@@ -1,6 +1,6 @@
 CC = cc
 
-filenames := arrays checks compare integer_parsing main memory parser strings booleans
+filenames := arrays checks compare integer_parsing main memory parser strings booleans float_parsing
 
 src_fpaths = $(addprefix src/, $(filenames))
 SRCS = $(addsuffix .c, $(src_fpaths))
