@@ -231,7 +231,7 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 				{				
 					json_entry[current_entry].content->type = VALUE;
 					json_entry[current_entry].content->value.data.boolean =
-						parse_bool(&fail, line + i);
+					parse_bool(&fail, line + i);
 				
 					if (fail)
 					{
