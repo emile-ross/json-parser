@@ -6,6 +6,7 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 	 * larger than 16 characters (in base 10) */
 	#define max_float_length 18
 	char float_string[max_float_length] = { 0 };	/* 18B because we account for sign (+/-) and NULL */
+	char *endptr = NULL;
 	uint8_t i = 0;
 
 	if (value == NULL)
@@ -14,8 +15,13 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 		sfree(node);
 	}
 
-	/* TODO iterate until we get something (like digit or sign)*/
+	/* iterate until we get something */
+	for (i = 0; (  !(isdigit(line[i])) && line[i] != '-' && line[i] != '+'  ) ; i++)
+	{
+		(*starting_index)++;
+	}
 
+	i = 0;
 	while (line[*starting_index] != '\0' && i < max_float_length - 1)
 	{
 		if ((line[*starting_index] == ',') || 
@@ -32,8 +38,8 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 	}
 
 	/* strtod */
-	(*value) = strtod(float_string, &endptr, 10);
-	if (*endptr != NULL)
+	(*value) = strtod(float_string, &endptr);
+	if (*endptr != '\0')
 	{
 		fprintf(stderr, "error: in floating_point_parsing() fn: invalid floating point integer\n");
 		sfree(node);
