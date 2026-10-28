@@ -27,14 +27,17 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 
 		float_string[i] = line[i];
 
-		*starting_index++;
+		(*starting_index)++;
 		i++;
 	}
 
 	/* strtod */
-
-	/* error checks*/
-
-	/* assignment to *value */
+	(*value) = strtod(float_string, &endptr, 10);
+	if (*endptr != NULL)
+	{
+		fprintf(stderr, "error: in floating_point_parsing() fn: invalid floating point integer\n");
+		sfree(node);
+		exit(EXIT_FAILURE);
+	}
 	return;
 }
