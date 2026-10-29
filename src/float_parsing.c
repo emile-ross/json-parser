@@ -1,6 +1,6 @@
 #include "header.h"
 
-void floating_point_parsing(struct memory_layout_node *node, double *value, char *line, size_t *starting_index)
+void floating_point_parsing(struct memory_layout_node *node, const char *line, size_t *starting_index, double *value)
 {
 	const char *p = NULL;
 	char *endptr = NULL;
@@ -10,16 +10,19 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 		return;
 	}
 
-	/* iterate until we get something */
-	for (i = 0; (  !(isdigit(line[i])) && line[i] != '-' && line[i] != '+'  ) ; i++)
+	/* Skip any characters that are not part of a number */
+	p = line + *starting_index;
+	while (*p && (!isdigit((unsigned char)*p)) && 
+			(*p != '+') &&
+			(*p != '-'))
 	{
 		p++;
 	}
 
-	if (*p == '\0') {
+	if (*p == '\0')
+	{
 		sfree(node);
 		exit(EXIT_FAILURE);
-	i = (uint32_t)(skipped);
 	while (line[skipped] != '\0' && i < max_float_length - 1)
 	{
 		if ((line[skipped] == ',') || 
@@ -30,13 +33,13 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 		}
 
 		float_string[i] = line[i];
-
 		skipped++;
 		i++;
 	}
 
 	/* strtod */
-	(*value) = strtod(float_string, &endptr);
+	(*value) = strtod(p, &endptr);
+
 	if (*endptr != '\0')
 	{
 		fprintf(stderr, "error: in floating_point_parsing() fn: invalid floating point integer\n");
@@ -44,5 +47,7 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 		sfree(node);
 		exit(EXIT_FAILURE);
 	}
+	/* set index */
+	(*starting_index) = (size_t)(endptr - line);
 	return;
 }
