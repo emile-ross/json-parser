@@ -89,6 +89,8 @@ int main(int argc, char *argv[])
 	nodes->allocated = False;
 	nodes->next_node = NULL;
 
+
+
 	json_parse(nodes, file_path, NUM_ITEMS, entries);
 	
 	printf("main.c (debug): \n");

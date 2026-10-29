@@ -132,6 +132,8 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 			{
 				fprintf(stderr, "Syntax error in JSON, a colon is only expected to be after a key_value\n");
 				/* TODO print context for easy debugging */
+
+				print_context(line + i, 'c', 10);
 				exit(EXIT_FAILURE);
 			}
 			else
@@ -233,6 +235,7 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 					if (fail)
 					{
 						fprintf(stderr, "Invalid boolean: %.10s\n", line + i);
+						sfree(node);
 						exit(EXIT_FAILURE);
 					}
 				
