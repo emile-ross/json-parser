@@ -133,12 +133,12 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 				fprintf(stderr, "Syntax error in JSON, a colon is only expected to be after a key_value\n");
 				/* TODO print context for easy debugging */
 
-				print_context(line + i, 'c', 10);
 				exit(EXIT_FAILURE);
 			}
 			else
 			{
 				fprintf(stderr, "Syntax error in JSON, expected content (value).\nDouble colons are not allowed */ \n");
+				print_context(line + i - 2 , ':', 10, "Remove colon here");
 				exit(EXIT_FAILURE);
 			}
 

@@ -55,5 +55,5 @@
 	struct memory_layout_node *get_last_node(struct memory_layout_node *node);
 	void sfree(struct memory_layout_node *node);
 
-void print_context(char *line, const char c, const uint16_t context_size);
+void print_context(char *line, const char c, const uint16_t context_size, char *message);
 

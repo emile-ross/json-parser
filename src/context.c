@@ -1,7 +1,7 @@
 #include "header.h"
 
 
-void print_context(char *line, const char c, const uint16_t context_size)
+void print_context(char *line, const char c, const uint16_t context_size, char *message)
 {
 	uint32_t i = 0;
 	uint32_t j = 0;
@@ -22,12 +22,18 @@ void print_context(char *line, const char c, const uint16_t context_size)
 
 	for (j = 0; j < i; j++)
 	{
-		putchar(' ');
 		if (j == udrl)
-			putchar(line[i]);
+			printf("\033[1m^\0330");
+		else
+			putchar(' ');
 	}
 
 	putchar('\n');
+
+	for (j = 0; j < udrl - 1; j++)
+		putchar(' ');
+
+	printf("\x1b[1m %s \x1b[0m\n", message);
 
 	return;
 }
