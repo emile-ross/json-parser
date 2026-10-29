@@ -30,8 +30,11 @@ void print_context(char *line, const char c, const uint16_t context_size, char *
 
 	putchar('\n');
 
-	for (j = 0; j < udrl - 1; j++)
-		putchar(' ');
+	if (udrl != 0)
+	{
+		for (j = 0; j < udrl - 1; j++)
+			putchar(' ');
+	}
 
 	printf("\x1b[1m %s \x1b[0m\n", message);
 

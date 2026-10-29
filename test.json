@@ -6,11 +6,11 @@
 		["Ontario", 100000],
 		["Texas", 1000000],
 		["Ottawa", 100000],
-		["New York", "New York City"],
+		["New York", "New York City"]
 	],
 	"calling code": "+1-XXX-XXX-XXXX",
 	"population": 40467728,
-	"gini-coefficient": 40467728,
+	"gini-coefficient": 0.305,
 	"currencies": ["CAD", "USD"],
 	"cold": true
 }

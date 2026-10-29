@@ -138,7 +138,11 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 			else
 			{
 				fprintf(stderr, "Syntax error in JSON, expected content (value).\nDouble colons are not allowed */ \n");
-				print_context(line + i - 2 , ':', 10, "Remove colon here");
+
+				if (key_value != NULL)
+					print_context(line + i - strlen(key_value) - 3 , ':', 20, "Remove colon here");
+				else
+					print_context(line + i, ':', 20, "Remove colon here");
 				exit(EXIT_FAILURE);
 			}
 
