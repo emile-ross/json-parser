@@ -10,6 +10,7 @@
 	],
 	"calling code": "+1-XXX-XXX-XXXX",
 	"population": 40467728,
+	"gini-coefficient": 40467728,
 	"currencies": ["CAD", "USD"],
 	"cold": true
 }

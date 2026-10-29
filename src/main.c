@@ -1,5 +1,6 @@
 #include "header.h"
 
+#define NUM_ITEMS (6)
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +13,7 @@ int main(int argc, char *argv[])
 	int j = 0;
 	size_t b = 0;
 	struct memory_layout_node *nodes = NULL;
-	json_content contents[5] = {0};
+	json_content contents[NUM_ITEMS] = {0};
 
 	json_data country =
 	{
@@ -51,21 +52,31 @@ int main(int argc, char *argv[])
 		"population",
 		NULL
 	};
+
+	json_data gini = 
+	{
+		NULL,
+		{ VALUE, FLOAT },
+		"gini-coefficient",
+		NULL
+	};
 	
 
-	json_data entries[5];
+	json_data entries[6];
 
 	calling_code.content = &contents[0];
 	population.content = &contents[1];
 	currency.content = &contents[2];
 	country.content = &contents[3];
 	cold.content = &contents[4];
+	gini.content = &contents[5];
 	
 	entries[0] = calling_code;
 	entries[1] = population;
 	entries[2] = currency;
 	entries[3] = country;
 	entries[4] = cold;
+	entries[5] = gini;
 
 	if (argc < 2)
 	{
@@ -73,12 +84,12 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	
-	nodes = malloc(sizeof(struct memory_layout_node));
+	nodes = smalloc(NULL, sizeof(struct memory_layout_node));
 	nodes->ptr = NULL;
 	nodes->allocated = False;
 	nodes->next_node = NULL;
 
-	json_parse(nodes, file_path, 5, entries);
+	json_parse(nodes, file_path, NUM_ITEMS, entries);
 	
 	printf("main.c (debug): \n");
 
@@ -87,7 +98,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Missing arguments in command\n");
 	}
 
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < NUM_ITEMS; i++) {
 		printf("KEY: %s\n", entries[i].key_value);
 		
 		switch (entries[i].type.content_type)
