@@ -42,6 +42,9 @@
 /* src/integer_parsing.c */
 	uint8_t parse_integer(const char *str, int64_t *result);
 
+/* src/float_parsing.c */
+	void floating_point_parsing(struct memory_layout_node *node, double *value, char *line, size_t *starting_index);
+
 /* src/buffers.c */
 	char *str_content_alloc(struct memory_layout_node *node, char *line, size_t *starting_index, size_t *size);
 

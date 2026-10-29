@@ -5,8 +5,9 @@ void floating_point_parsing(struct memory_layout_node *node, double *value, char
 	const char *p = NULL;
 	char *endptr = NULL;
 
-		fprintf(stderr, "error: cannot write to NULL pointer (floating_point_parsing())\n");
-		sfree(node);
+	if (line == NULL || starting_index == NULL || value == NULL)
+	{
+		return;
 	}
 
 	/* iterate until we get something */

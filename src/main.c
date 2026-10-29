@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 	};
 	
 
-	json_data entries[6];
+	json_data entries[NUM_ITEMS];
 
 	calling_code.content = &contents[0];
 	population.content = &contents[1];
