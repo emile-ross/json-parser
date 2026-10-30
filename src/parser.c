@@ -2,7 +2,7 @@
 
 const Bool verbose = True;
 
-int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t num_entries, json_data json_entry[])
+void json_parse(struct memory_layout_node *node, const char *file_path, uint32_t num_entries, json_data json_entry[])
 {
 	/* json_state is an enum defined in src/enums.h
 	 * it is used in order to store the current parsing mode (or the type of value expected */
@@ -39,6 +39,7 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 					   if we're looking for "name" and we found it,
 					   key_failure is set to false */
 	Bool fail = True;	/* used for error checking in Bool parsing */
+
 
 
 	/* END of declaration section (C89) */
@@ -178,7 +179,7 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 				{
 					fprintf(stderr, "Avoided integer overflow in json_parse()\n");
 					fprintf(stderr, "%lu is greater than the upper bound: %d\n", (unsigned long)str_size, INT32MAX);
-					/* TODO add failure boolean for freeing all buffers and exiting safely */
+					sfree(node);
 					break;
 				}
 
@@ -243,6 +244,8 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 						exit(EXIT_FAILURE);
 					}
 				
+					/* increment index depending on the value
+					 * increment by 3 if it's "true" and 4 if it's isn't */
 					i += strncmp(line + i, "true", 4) == 0 ? 3 : 4;
 				
 					state = EXPECT_KEY;
@@ -253,5 +256,4 @@ int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t 
 		i++;
 	}
 
-	return 0;
 }

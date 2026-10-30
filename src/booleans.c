@@ -1,6 +1,8 @@
 #include "header.h"
 
-/* *content = parse_bool(&fail, line + i);*/
+/* gets called like this:
+ * *content = parse_bool(&fail, line + i); 
+ * ^Bool */
 Bool parse_bool(Bool *fail, char *line)
 {
        *fail = False;

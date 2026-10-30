@@ -17,7 +17,7 @@
 	};
 
 /* src/parse.c */
-	int json_parse(struct memory_layout_node *node, const char *file_path, uint32_t num_entries, json_data json_entry[]);
+	void json_parse(struct memory_layout_node *node, const char *file_path, uint32_t num_entries, json_data json_entry[]);
 	/* json_parse expects an array of data composed of structs of json_data type (see src/json_data.h ) */
 
 /* src/compare.c */
