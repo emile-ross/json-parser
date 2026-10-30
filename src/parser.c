@@ -228,7 +228,7 @@ void json_parse(struct memory_layout_node *node, const char *file_path, uint32_t
 				else if (json_entry[current_entry].type.data_type == FLOAT && json_entry[current_entry].type.content_type == VALUE)
 				{
 					/* currently unsupported */
-					floating_point_parsing(node, line, &i, &value);
+					floating_point_parsing(line, &i, &value);
 				}
 				else if (json_entry[current_entry].type.data_type == BOOL &&
 						json_entry[current_entry].type.content_type == VALUE)
