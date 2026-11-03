@@ -18,11 +18,21 @@ void floating_point_parsing(const char *line, size_t *starting_index, double *va
 	{
 		p++;
 	}
+	
 	/* strtod */
 	(*value) = strtod(p, &endptr);
+	if (
+			(*endptr != ';') && 
+			(*endptr != ',') && 
+			(*endptr != ']') && 
+			(*endptr != '\0') && 
+			!isspace((unsigned char)*endptr) && 
+			(*endptr != '}'))
+	{
+		fprintf(stderr, "invalid character '%c' after float\n", *endptr);
+		exit(EXIT_FAILURE);
+	}
 
 	/* set index */
 	(*starting_index) = (size_t)(endptr - line);
-
-	printf("%f\n", (*value));
 }

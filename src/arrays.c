@@ -24,10 +24,8 @@ size_t json_array_parser(struct memory_layout_node *node, json_content *content,
 
 	/* variable declaration end */
 
-	/* Only 2 for now. */
 	content->array = smalloc(node, STARTING_ALLOCATION * sizeof(json_value));
 	content->recursive_content = smalloc(node, STARTING_ALLOCATION * sizeof(json_content));	
-	/* Only 2 for now */
 	while (line[i] != '\0' && reached_end == False) 
 	{
 		

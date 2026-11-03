@@ -123,7 +123,8 @@ int main(int argc, char *argv[])
 				case CHAR:
 					break;
 				case FLOAT:
-					break;
+					printf("TYPE: FLOAT \n");
+					printf("VALUE: %f\n", entries[i].content->value.data.ffloat);
 			}
 			break;
 			case ARRAY:
