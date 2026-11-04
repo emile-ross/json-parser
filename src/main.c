@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 							printf("Recursion Array [%d]. value_int: %" PRIu64 "\n", j,
 								entries[i].content->recursive_content[b].array[j].data.integer);
 						if (entries[i].content->recursive_content[b].array[j].type.data_type == FLOAT)
-							printf("Recursion Array [%d]. value_int: %f\n", j,
+							printf("Recursion Array [%d]. value_float: %f\n", j,
 								entries[i].content->recursive_content[b].array[j].data.ffloat);
 					}
 				}
