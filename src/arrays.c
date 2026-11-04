@@ -1,5 +1,24 @@
 #include "header.h"
 
+
+Bool does_number_contain_dot(const char* str) 
+{
+	const char* p = str;
+	if (!isdigit(*p)) return False;
+	while (*p != '\0') {
+		if (*p == '.') return True;
+		if (*p == ';' ||
+			*p == ',' ||
+			*p == ']' ||
+			*p == '}' ||
+			isspace((unsigned char)*p)
+		) return False;
+		p++;
+	}
+	return False;
+}
+
+
 /* Handles recursive parsing for nested JSON arrays.
  * Parsing Algorithm:
  * '[' -> find the next comma -> ',' -> extract the value between commas or brackets
@@ -24,14 +43,13 @@ size_t json_array_parser(struct memory_layout_node *node, json_content *content,
 
 	/* variable declaration end */
 
-	/* Only 2 for now. */
 	content->array = smalloc(node, STARTING_ALLOCATION * sizeof(json_value));
 	content->recursive_content = smalloc(node, STARTING_ALLOCATION * sizeof(json_content));	
-	/* Only 2 for now */
 	while (line[i] != '\0' && reached_end == False) 
 	{
 		
-		if (total_values + 2 > array_capacity) {
+		if (total_values + 2 > array_capacity) 
+		{
 			array_capacity *= 2;
 			content->array = srealloc(node, content->array, array_capacity * sizeof(json_value));
 		}
@@ -39,7 +57,8 @@ size_t json_array_parser(struct memory_layout_node *node, json_content *content,
 		switch (line[i]) 
 		{
 		case '[':
-			if (recursion_counter >= recursion_capacity) {
+			if (recursion_counter >= recursion_capacity) 
+			{
 				recursion_capacity *= 2;
 				content->recursive_content = srealloc(node, content->recursive_content, recursion_capacity * sizeof(json_content));	
 			}
@@ -72,14 +91,28 @@ size_t json_array_parser(struct memory_layout_node *node, json_content *content,
 			buffer.data.string = str_content_alloc(node, line, &i, &str_size);
 			break;
 		case ',':
-			if (buffer_changed) {
+			if (buffer_changed) 
+			{
 				/* Flush buffer into content array and move to the next item. */
 				content->array[total_values++] = buffer;
 				buffer_changed = False;
 			}
 			break;
 		default:
-			if (isdigit(line[i])) { 
+			if (does_number_contain_dot(line + i) == True) 
+			{
+				if (isdigit(line[i])) 
+				{
+					floating_point_parsing(line, &i, &buffer.data.ffloat);
+					buffer.type.data_type = FLOAT;
+					buffer.type.content_type = VALUE;
+					buffer_changed = True;
+					i--;
+					break;
+				}
+				break;
+			} else if (isdigit(line[i])) 
+			{ 
 				i += parse_integer(line + i, &buffer.data.integer);
 				buffer.type.data_type = INTEGER;
 				buffer.type.content_type = VALUE;

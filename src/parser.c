@@ -22,7 +22,7 @@ void json_parse(struct memory_layout_node *node, const char *file_path, uint32_t
 	char *content = NULL;	/* TODO fix the thousands of memory leaks/lost pointers */
 
 	char buf[LINE_LEN];
-	double value = 0;
+	/* double value = 0;*/
 	size_t index;
 	char *p;
 	void *tmp;		/* for reallocs */
@@ -228,7 +228,10 @@ void json_parse(struct memory_layout_node *node, const char *file_path, uint32_t
 				else if (json_entry[current_entry].type.data_type == FLOAT && json_entry[current_entry].type.content_type == VALUE)
 				{
 					/* currently unsupported */
-					floating_point_parsing(line, &i, &value);
+					json_entry[current_entry].content->type = VALUE;
+					floating_point_parsing(line, &i, &json_entry[current_entry].content->value.data.ffloat);
+					state = EXPECT_KEY;
+					num_lookups++;
 				}
 				else if (json_entry[current_entry].type.data_type == BOOL &&
 						json_entry[current_entry].type.content_type == VALUE)

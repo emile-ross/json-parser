@@ -5,8 +5,8 @@
 		["United States", 100000], 
 		["California", 100000],
 		["Ontario", 100000],
-		["Texas", 1000000],
-		["Ottawa", 100000],
+		["Texas", 200.1],
+		["Ottawa", 10.2],
 		["New York", "New York City"]
 	],
 	"calling code": "+1-XXX-XXX-XXXX",
